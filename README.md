@@ -1,4 +1,4 @@
-<img width="1080" height="2340" alt="image" src="https://github.com/user-attachments/assets/160dc777-9977-410b-aed8-c7b5baebbb63" /># Tiketons 🎵 - Aplikasi Pemesanan Tiket Konser
+# Tiketons 🎵 - Aplikasi Pemesanan Tiket Konser
 
 **Tiketons** adalah aplikasi mobile berbasis Android yang dikembangkan menggunakan **Kotlin** dan **Jetpack Compose**. Aplikasi ini memungkinkan pengguna untuk mencari jadwal konser, memesan tiket, melakukan simulasi pembayaran, dan mengelola E-Ticket secara digital.
 
