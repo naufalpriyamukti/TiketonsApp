@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Tiketons</string>
+    <string name="login_title">Masuk</string>
+    <string name="register_title">Daftar Akun</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="btn_login">Masuk</string>
+    <string name="btn_register">Daftar</string>
+    <string name="search_hint">Cari konser...</string>
+    <string name="price_format">Rp %,d</string>
+</resources>
