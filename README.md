@@ -12,7 +12,7 @@ Berikut adalah tampilan antarmuka pengguna (User Interface) dari Tiketons:
 
 | **Login & Register** | **Beranda & Detail** | **Transaksi & Tiket** |
 | :---: | :---: | :---: |
-| <img width="1080" height="2340" alt="Image" src="https://github.com/user-attachments/assets/bf42b058-8672-4737-a6cd-ad2fc22b92c6" /> <br> *Halaman Login* | <img width="1080" height="2340" alt="Image" src="https://github.com/user-attachments/assets/0be45da8-689b-4f6e-af74-9773b7280775" /> <br> *Halaman Sign Up* | <img src="docs/img/home_screen.png" width="200" /> <br> *Daftar Konser* | <img src="docs/img/payment_screen.png" width="200" /> <br> *Simulasi Bayar* |
+| <img width="1080" height="2340" alt="Image" src="https://github.com/user-attachments/assets/bf42b058-8672-4737-a6cd-ad2fc22b92c6" /> <img width="1080" height="2340" alt="Image" src="https://github.com/user-attachments/assets/0be45da8-689b-4f6e-af74-9773b7280775" /><br> *Halaman Login* | <img src="docs/img/home_screen.png" width="200" /> <br> *Daftar Konser* | <img src="docs/img/payment_screen.png" width="200" /> <br> *Simulasi Bayar* |
 | <img src="docs/img/register_screen.png" width="200" /> <br> *Halaman Daftar* | <img src="docs/img/detail_screen.png" width="200" /> <br> *Detail Event* | <img src="docs/img/eticket_screen.png" width="200" /> <br> *E-Ticket Digital* |
 
 > **Catatan:** Ganti path gambar di atas (misal: `docs/img/login_screen.png`) dengan lokasi file gambar screenshot Anda yang sebenarnya.
