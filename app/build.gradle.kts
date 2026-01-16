@@ -56,6 +56,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.ui.geometry)
     // --- TAMBAHKAN BARIS INI (WAJIB JIKA DESUGARING AKTIF) ---
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 

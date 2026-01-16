@@ -1,7 +1,37 @@
 package com.tiketons.app.ui.views.user.ticket
 
-
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.tiketons.app.R
 import com.tiketons.app.modeldata.TicketModel
 import com.tiketons.app.ui.common.UiState
@@ -73,14 +103,12 @@ fun ETicketScreen(
 
 // --- LOGIC HELPER UNTUK CEK TANGGAL SELESAI ---
 fun getTicketStatus(ticket: TicketModel): Pair<String, Color> {
-    // Format tanggal database (sesuaikan jika berbeda)
     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val eventDate = try {
         sdf.parse(ticket.eventDate ?: "")
     } catch (e: Exception) { null }
 
     if (eventDate != null) {
-        // Tambah 2 hari dari tanggal event
         val twoDaysAfterEvent = Date(eventDate.time + (2L * 24 * 60 * 60 * 1000))
         val today = Date()
 
@@ -89,7 +117,6 @@ fun getTicketStatus(ticket: TicketModel): Pair<String, Color> {
         }
     }
 
-    // Jika belum lewat 2 hari, cek status tiket
     return if (ticket.isUsed) {
         Pair("TERPAKAI", Color.Red)
     } else {
@@ -98,6 +125,7 @@ fun getTicketStatus(ticket: TicketModel): Pair<String, Color> {
 }
 
 // --- CUSTOM SHAPE DETAIL TIKET (GELOMBANG KANAN) ---
+// Perbaikan: Menggunakan androidx.compose.ui.graphics.Shape
 class ETicketDetailShape(private val cornerRadius: Float) : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
         return Outline.Generic(Path().apply {
@@ -142,7 +170,6 @@ fun ETicketContent(ticket: TicketModel) {
     val cornerRadius = 16.dp.value * density
     val ticketShape = ETicketDetailShape(cornerRadius)
 
-    // Ambil status berdasarkan tanggal
     val (statusText, statusColor) = getTicketStatus(ticket)
 
     Column(
@@ -152,7 +179,6 @@ fun ETicketContent(ticket: TicketModel) {
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // --- KARTU TIKET DETAIL ---
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = ticketShape,
@@ -161,7 +187,7 @@ fun ETicketContent(ticket: TicketModel) {
         ) {
             Column(modifier = Modifier.fillMaxWidth().padding(24.dp)) {
 
-                // HEADER: Logo & Status
+                // HEADER
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -177,7 +203,6 @@ fun ETicketContent(ticket: TicketModel) {
                         Text("TIKETONS", style = MaterialTheme.typography.titleMedium, color = BluePrimary, fontWeight = FontWeight.Black, letterSpacing = 1.sp)
                     }
 
-                    // Badge Status (Aktif / Terpakai / Selesai)
                     Surface(
                         color = statusColor.copy(alpha = 0.1f),
                         shape = RoundedCornerShape(50)
@@ -203,14 +228,14 @@ fun ETicketContent(ticket: TicketModel) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // INFO UTAMA (Tanggal & Lokasi)
+                // INFO UTAMA
                 DetailRow(Icons.Rounded.CalendarToday, DateFormatter.formatDate(ticket.eventDate ?: ""))
                 Spacer(modifier = Modifier.height(12.dp))
                 DetailRow(Icons.Rounded.LocationOn, ticket.location ?: "Lokasi belum ditentukan")
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // GARIS PUTUS-PUTUS
+                // GARIS PUTUS-PUTUS (FIX IMPORTS)
                 Canvas(modifier = Modifier.fillMaxWidth().height(1.dp)) {
                     drawLine(
                         color = Color.LightGray,
@@ -222,11 +247,9 @@ fun ETicketContent(ticket: TicketModel) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // --- INFORMASI DETAIL TIKET ---
-                // Nama Customer
+                // INFO DETAIL TIKET
                 Text("Nama Customer", fontSize = 12.sp, color = Color.Gray)
                 Text(
-                    // Pastikan TicketModel punya field userName/fullName
                     text = ticket.userName ?: "-",
                     fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black
                 )
@@ -237,7 +260,6 @@ fun ETicketContent(ticket: TicketModel) {
                     Column {
                         Text("Order ID", fontSize = 12.sp, color = Color.Gray)
                         Text(
-                            // Tampilkan Transaction ID (Bukan Ticket ID #6)
                             text = ticket.transactionId?.uppercase() ?: "-",
                             fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black
                         )
@@ -250,7 +272,6 @@ fun ETicketContent(ticket: TicketModel) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Harga
                 Text("Total Harga", fontSize = 12.sp, color = Color.Gray)
                 Text(
                     text = CurrencyHelper.formatRupiah(ticket.amount ?: 0.0),
@@ -261,7 +282,6 @@ fun ETicketContent(ticket: TicketModel) {
                 Divider(color = Color(0xFFEEEEEE))
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // SYARAT & KETENTUAN
                 Text("Syarat & Ketentuan", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
